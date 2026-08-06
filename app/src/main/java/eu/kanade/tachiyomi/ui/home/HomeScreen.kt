@@ -22,9 +22,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
@@ -86,6 +93,22 @@ object HomeScreen : Screen() {
             tab = LibraryTab,
             key = TabNavigatorKey,
         ) { tabNavigator ->
+            var bottomNavShownByScroll by remember { mutableStateOf(true) }
+
+            val bottomBarScrollConnection = remember {
+                object : NestedScrollConnection {
+                    override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                        val delta = available.y
+                        if (delta < -1f) {
+                            bottomNavShownByScroll = false
+                        } else if (delta > 1f) {
+                            bottomNavShownByScroll = true
+                        }
+                        return Offset.Zero
+                    }
+                }
+            }
+
             // Provide usable navigator to content screen
             CompositionLocalProvider(LocalNavigator provides navigator) {
                 Scaffold(
@@ -104,7 +127,7 @@ object HomeScreen : Screen() {
                                 showBottomNavEvent.receiveAsFlow().collectLatest { value = it }
                             }
                             AnimatedVisibility(
-                                visible = bottomNavVisible,
+                                visible = bottomNavVisible && bottomNavShownByScroll,
                                 enter = expandVertically(),
                                 exit = shrinkVertically(),
                             ) {
@@ -121,7 +144,8 @@ object HomeScreen : Screen() {
                     Box(
                         modifier = Modifier
                             .padding(contentPadding)
-                            .consumeWindowInsets(contentPadding),
+                            .consumeWindowInsets(contentPadding)
+                            .nestedScroll(bottomBarScrollConnection),
                     ) {
                         AnimatedContent(
                             targetState = tabNavigator.current,
@@ -140,6 +164,10 @@ object HomeScreen : Screen() {
             }
 
             val goToLibraryTab = { tabNavigator.current = LibraryTab }
+
+            LaunchedEffect(tabNavigator.current) {
+                bottomNavShownByScroll = true
+            }
 
             BackHandler(enabled = tabNavigator.current != LibraryTab, onBack = goToLibraryTab)
 
