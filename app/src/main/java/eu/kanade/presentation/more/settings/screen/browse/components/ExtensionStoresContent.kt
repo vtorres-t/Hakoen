@@ -25,7 +25,6 @@ import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.material.padding
 import tachiyomi.presentation.core.i18n.stringResource
 import tachiyomi.presentation.core.icons.CustomIcons
-import tachiyomi.presentation.core.icons.Discord
 
 @Composable
 fun ExtensionStoresContent(
@@ -98,15 +97,6 @@ private fun ExtensionStoresListItem(
                     imageVector = Icons.Outlined.Public,
                     contentDescription = stringResource(MR.strings.action_open_in_browser),
                 )
-            }
-
-            if (store.contact.discord != null) {
-                IconButton(onClick = onOpenDiscord) {
-                    Icon(
-                        imageVector = CustomIcons.Discord,
-                        contentDescription = null,
-                    )
-                }
             }
 
             IconButton(onClick = onCopy) {

@@ -65,14 +65,7 @@ fun BrowseSourceToolbar(
                             onClick = { selectingDisplayMode = true },
                         ),
                     )
-                    if (isLocalSource) {
-                        add(
-                            AppBar.OverflowAction(
-                                title = stringResource(MR.strings.label_help),
-                                onClick = onHelpClick,
-                            ),
-                        )
-                    } else {
+                    if (!isLocalSource) {
                         add(
                             AppBar.OverflowAction(
                                 title = stringResource(MR.strings.action_open_in_web_view),
