@@ -4,6 +4,7 @@ on:
   push:
     branches:
         - '**'
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -23,10 +24,10 @@ jobs:
         distribution: temurin
     - name: Assemble APK
       run: ./gradlew --no-daemon 'assembleRelease'
-    - name: Set KAHON_VERSION
-      run: echo "KAHON_VERSION=v$(grep --only-matching --perl-regexp 'versionName\s=\s\"\K([0-9\.]+)' './app/build.gradle.kts')+$(git rev-parse --short 'HEAD')" >> "${GITHUB_ENV}"
+    - name: Set HAKOEN_VERSION
+      run: echo "HAKOEN_VERSION=v$(grep --only-matching --perl-regexp 'versionName\s=\s\"\K([0-9\.]+)' './app/build.gradle.kts')+$(git rev-parse --short 'HEAD')" >> "${GITHUB_ENV}"
     - name: Upload APK
       uses: actions/upload-artifact@main
       with:
-        name: "kahon_${{ env.KAHON_VERSION }}-github-release"
+        name: "hakoen_${{ env.HAKOEN_VERSION }}-github-release"
         path: ./app/build/outputs/apk/release/app-release-unsigned.apk
