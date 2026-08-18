@@ -25,7 +25,7 @@ android {
     namespace = "eu.kanade.tachiyomi"
 
     defaultConfig {
-        applicationId = "com.amanoteam.kahon"
+        applicationId = "com.x.kahoen"
 
         versionCode = 23
         versionName = "0.20.2"

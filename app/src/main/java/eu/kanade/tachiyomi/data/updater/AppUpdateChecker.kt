@@ -35,7 +35,7 @@ class AppUpdateChecker {
 }
 
 val GITHUB_REPO: String by lazy {
-    "AmanoTeam/Kahon"
+    "vtorres-t/Hakoen"
 }
 
 val RELEASE_TAG: String by lazy {

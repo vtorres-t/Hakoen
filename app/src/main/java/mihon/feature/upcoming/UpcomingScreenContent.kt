@@ -114,11 +114,6 @@ private fun UpcomingToolbar(
                         iconTint = if (hasFilters) MaterialTheme.colorScheme.active else LocalContentColor.current,
                         onClick = onClickFilter,
                     ),
-                    AppBar.Action(
-                        title = stringResource(MR.strings.upcoming_guide),
-                        icon = Icons.AutoMirrored.Outlined.HelpOutline,
-                        onClick = { uriHandler.openUri(Constants.URL_HELP_UPCOMING) },
-                    ),
                 ),
             )
         },
