@@ -143,7 +143,6 @@ data class BrowseSourceScreen(
                         onDisplayModeChange = { viewModel.displayMode = it },
                         navigateUp = navigateUp,
                         onWebViewClick = onWebViewClick,
-                        onHelpClick = onHelpClick,
                         onSettingsClick = { navigator.push(SourcePreferencesScreen(sourceId)) },
                         onSearch = viewModel::search,
                     )
@@ -224,8 +223,6 @@ data class BrowseSourceScreen(
                 snackbarHostState = snackbarHostState,
                 contentPadding = paddingValues,
                 onWebViewClick = onWebViewClick,
-                onHelpClick = { uriHandler.openUri(Constants.URL_HELP) },
-                onLocalSourceHelpClick = onHelpClick,
                 onMangaClick = { navigator.push((MangaScreen(it.id, true))) },
                 onMangaLongClick = { manga ->
                     scope.launchIO {

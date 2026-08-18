@@ -44,8 +44,6 @@ fun BrowseSourceContent(
     snackbarHostState: SnackbarHostState,
     contentPadding: PaddingValues,
     onWebViewClick: () -> Unit,
-    onHelpClick: () -> Unit,
-    onLocalSourceHelpClick: () -> Unit,
     onMangaClick: (Manga) -> Unit,
     onMangaLongClick: (Manga) -> Unit,
 ) {
@@ -84,15 +82,7 @@ fun BrowseSourceContent(
                 is LoadState.Error -> getErrorMessage(errorState)
                 else -> stringResource(MR.strings.no_results_found)
             },
-            actions = if (source is LocalSource) {
-                listOf(
-                    EmptyScreenAction(
-                        stringRes = MR.strings.local_source_help_guide,
-                        icon = Icons.AutoMirrored.Outlined.HelpOutline,
-                        onClick = onLocalSourceHelpClick,
-                    ),
-                )
-            } else {
+            actions = if (source !is LocalSource){
                 listOf(
                     EmptyScreenAction(
                         stringRes = MR.strings.action_retry,
@@ -104,12 +94,9 @@ fun BrowseSourceContent(
                         icon = Icons.Outlined.Public,
                         onClick = onWebViewClick,
                     ),
-                    EmptyScreenAction(
-                        stringRes = MR.strings.label_help,
-                        icon = Icons.AutoMirrored.Outlined.HelpOutline,
-                        onClick = onHelpClick,
-                    ),
                 )
+            } else {
+                emptyList()
             },
         )
 
