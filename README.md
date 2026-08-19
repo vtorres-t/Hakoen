@@ -1,4 +1,4 @@
-# Kahon
+# Hakoen
 
 A fork of Mihon, a free and open-source manga reader for Android.
 
