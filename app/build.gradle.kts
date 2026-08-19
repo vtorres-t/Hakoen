@@ -17,15 +17,13 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
-val supportedAbis = setOf("armeabi-v7a", "arm64-v8a")
-
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 
 android {
     namespace = "eu.kanade.tachiyomi"
 
     defaultConfig {
-        applicationId = "com.x.kahoen"
+        applicationId = "com.home.hakoen"
 
         versionCode = 23
         versionName = "0.20.2"
@@ -34,12 +32,24 @@ android {
         buildConfigField("String", "COMMIT_SHA", "\"${getLatestCommitSha()}\"")
         buildConfigField("String", "BUILD_TIME", "\"${getBuildTime(useLatestCommitTime = false)}\"")
         buildConfigField("boolean", "UPDATER_ENABLED", "${Config.enableUpdater}")
-
-        ndk {
-            abiFilters += supportedAbis
-        }
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        create("release") {
+            storeFile = file("key")
+            storePassword = System.getenv("KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+        }
+    }
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            //noinspection ChromeOsAbiSupport
+            include("arm64-v8a", "armeabi-v7a")
+            isUniversalApk = false
+        }
     }
 
     buildTypes {
