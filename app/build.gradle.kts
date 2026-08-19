@@ -63,6 +63,7 @@ android {
             isShrinkResources = true
 
             isProfileable = true
+            signingConfig signingConfigs.release
 
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
 
