@@ -15,7 +15,3 @@ A fork of Mihon, a free and open-source manga reader for Android.
 
 - Add a Shizuku-based uninstall service.
 - Show up to 3 items in the **Last used** tab instead of only one.
-
-## Releases
-
-You can download Kahon releases from either [GitHub](https://github.com/AmanoTeam/Kahon/releases) or [F-Droid](https://f-droid.org/packages/com.amanoteam.kahon).
