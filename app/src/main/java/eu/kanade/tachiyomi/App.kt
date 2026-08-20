@@ -82,11 +82,6 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
 
         GlobalExceptionHandler.initialize(applicationContext, CrashActivity::class.java)
 
-        // TLS 1.3 support for Android < 10
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            Security.insertProviderAt(Conscrypt.newProvider(), 1)
-        }
-
         // Avoid potential crashes
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val process = getProcessName()
@@ -190,15 +185,20 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
                 add(MangaKeyer())
             }
 
+            val isLowRam = DeviceUtil.isLowRamDevice(this@App)
             memoryCache(
                 MemoryCache.Builder()
-                    .maxSizePercent(context)
+                    .maxSizePercent(context, percent = if (isLowRam) 0.15 else 0.25)
+                    .strongReferencesEnabled(!isLowRam) // En Low RAM, prioriza referencias débiles para evitar OutOfMemory
                     .build(),
             )
 
             crossfade((300 * this@App.animatorDurationScale).toInt())
-            allowRgb565(DeviceUtil.isLowRamDevice(this@App))
-            if (networkPreferences.verboseLogging.get()) logger(DebugLogger())
+            allowRgb565(isLowRam)
+
+            if (networkPreferences.verboseLogging.get() && BuildConfig.DEBUG) {
+                logger(DebugLogger())
+            }
 
             // Coil spawns a new thread for every image load by default
             fetcherCoroutineContext(Dispatchers.IO.limitedParallelism(8))
