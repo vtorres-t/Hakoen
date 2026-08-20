@@ -62,7 +62,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
 
-            isProfileable = true
+            isProfileable = false
             signingConfig = signingConfigs.getByName("release")
 
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
@@ -73,15 +73,7 @@ android {
 
     packaging {
         jniLibs {
-            keepDebugSymbols += listOf(
-                "libandroidx.graphics.path",
-                "libarchive-jni",
-                "libconscrypt_jni",
-                "libimagedecoder",
-                "libquickjs",
-                "libsqlite3x",
-            )
-                .map { "**/$it.so" }
+            keepDebugSymbols.clear()
         }
         resources {
             excludes += setOf(
@@ -132,6 +124,7 @@ kotlin {
             "-opt-in=kotlinx.coroutines.FlowPreview",
             "-opt-in=kotlinx.coroutines.InternalCoroutinesApi",
             "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
+            "-P=plugin:androidx.compose.compiler.plugins.kotlin:featureFlag=StrongSkipping"
         )
     }
 }
