@@ -1,4 +1,7 @@
--dontobfuscate
+
+-keepnames class eu.kanade.**
+-keepnames class tachiyomi.**
+-keepnames class mihon.**
 
 -keep,allowoptimization class eu.kanade.**
 -keep,allowoptimization class tachiyomi.**
@@ -94,4 +97,10 @@
 -keepclassmembers class mihon.app.shizuku.ShellInterface {
     public <init>();
     public void destroy();
+}
+
+-assumenosideeffects class android.util.Log {
+    public static boolean isLoggable(java.lang.String, int);
+    public static int v(...);
+    public static int d(...);
 }
