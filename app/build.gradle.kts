@@ -124,7 +124,6 @@ kotlin {
             "-opt-in=kotlinx.coroutines.FlowPreview",
             "-opt-in=kotlinx.coroutines.InternalCoroutinesApi",
             "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
-            "-P=plugin:androidx.compose.compiler.plugins.kotlin:featureFlag=StrongSkipping"
         )
     }
 }
